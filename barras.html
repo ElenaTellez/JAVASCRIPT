@@ -1,0 +1,26 @@
+<head>
+var contador;
+var intervalo;
+
+function aceptar(){
+	crear intervalo
+	
+	}
+
+function pinta(){
+	contador++;
+	document.getElementById("barra").style.background=
+	document.getElementById("colorbarra").value;
+	document.getElementById("porcentaje").innerHTML=contador;
+	document.getElementById("barra").style.witdh= contador + "px";
+	}
+
+
+</head>
+<body>
+longitud:<input type="number" id="longitud"><br>
+Color:<input type="color" id="colorbarra"><br>
+Tiempo por pixel: <input type="number" id="tiempo"><br>
+<button id="aceptar" onclick=aceptar()">Aceptar</button><br>
+<span id="intervalo"></span>
+</body>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+<script>
+//variable inicial de la cuenta
+var cuenta=10;
+
+var intervalo=setInterval(function(){
+	if (cuenta>0){
+		cuenta--;
+
+document.getElementById("micuenta").innerHTML=cuenta;
+} else clearInterval(intervalo);
+},1000);
+</script>
+</head>
+<body>
+<div id="micuenta">10</div>
+
+</body>
+</html>

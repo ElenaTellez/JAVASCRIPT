@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<style>
+#container {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  background: yellow;
+}
+#animate {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  background-color: red;
+  border-radius:100%;
+}
+</style>
+<body>
+
+<p>
+<button onclick="myMove()">Click Me</button>
+</p> 
+
+<div id ="container">
+<div id ="animate"></div>
+</div>
+
+<script>
+	
+var posH=0;
+var posV=0;	
+
+function myMove() {
+  var elem = document.getElementById("animate");   
+ 
+  var id = setInterval(frame, 5);
+  function frame() {
+	  
+	 if ((posH <350)&&(posV == 0)){
+      posH++;
+      elem.style.left = posH + 'px'; 
+    } else if ((posV <= 350)&&(posH == 350)){
+      posV++;
+      elem.style.top = posV + 'px'; 
+    } else if (posH > 0) {
+      posH--;
+      elem.style.left = posH + 'px'; 
+    } else if (posV > 1) { //tengo que parar en uno porque sino entro en siguiente intervalo
+      posV--;
+      elem.style.top = posV + 'px'; 
+    } else {
+		clearInterval(id);
+	}
+  }
+}
+</script>
+
+</body>
+</html>
+

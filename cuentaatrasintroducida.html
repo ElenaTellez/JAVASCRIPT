@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script>
+		
+//funcion que va a recoger el numero que yo introduzco y hace que cuente atras
+function iniciar(){
+	
+	var cuenta=document.getElementById("segundos").value;
+	document.getElementById("okbtn").disabled=true;//habilita el boton ok 
+	
+	var intervalo=setInterval(function(){
+		if (cuenta>0){
+			cuenta--;
+			document.getElementById("micuenta").innerHTML=cuenta;
+		} else {
+			document.getElementById("okbtn").disabled=false; //deshabilita el boton ok 
+			clearInterval(intervalo);
+		}
+	},1000);	
+}
+</script>
+</head>
+<body>
+
+<form>introduzca un número:<br>
+  	<input type="number" id="segundos">
+  	<input type="button" id="okbtn" value="OK" onclick="iniciar()">
+</form> 
+
+<div id="micuenta"></div>
+
+</body>
+</html>

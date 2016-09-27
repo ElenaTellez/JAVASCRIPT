@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<style>
+	
+	#container {
+		width: 800px;
+		height: 400px;
+		position: relative;
+	}
+	
+	#objeto {
+		width: 700px;
+		height: 300px;
+		position: relative;
+	}
+
+	.circulo {
+		position: absolute;
+		border-radius:100%;
+	}
+</style>
+<body>
+
+<p>
+	<button onclick="genera()">Genera</button>
+	<button onclick="seleccion()">Limpia</button>
+</p> 
+
+<div id ="container">	
+		<div id ="objeto"></div>
+ </div>
+
+<script>
+	
+	var contador = 0;		
+
+	function genera() {
+		var elem = document.getElementById("container");
+		var circu = document.createElement("div");
+		circu.className="circulo";
+  
+		var newColor = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+		circu.style.backgroundColor = newColor;
+     
+		   //posición horizontal aleatorio
+		circu.style.left = getRand(0, 700) + "px"; // para darle la posicion horizontal aleatoria utilizo otra funcion que esta desarrollada abajo. 
+           
+		   //Top comienza en la parte alta del container
+		circu.style.top = getRand(0, 300) + "px";
+			
+			//crea tamaño de circulo de forma aleatoria
+		var tamano = ((Math.random() * 100)+10);	
+			
+		circu.style.width = tamano + "px";
+		circu.style.height = tamano  + "px";
+			
+		circu.setAttribute("id", "circulo" + contador); //crea bolas individualizadas y numeradas		
+		contador++;
+		document.getElementById("container").appendChild(circu); //agregamos la capa circulo a container
+		circu.setAttribute("onClick", "seleccionBorra(" + circu.id + ")"); // crea el onclick individual
+	}
+   
+	function getRand(min, max) { //esta funcion ayuda a crear la posicion de forma aleatoria
+		return Math.random() * (max - min) + min;
+	}	
+	
+	function seleccionBorra(circu){
+		circu.parentNode.removeChild(circu);
+    }
+
+	 
+</script>
+
+</body>
+</html>

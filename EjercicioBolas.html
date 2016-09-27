@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Examen</title>
+    <style>
+        #content {
+            width: 800px;
+            height: 700px;
+            position: absolute;
+        }
+        #buttons {
+            text-align: center;
+        }
+        #pecera {
+            height: 700px;
+            width: 1400px;
+            border: 2px solid blue;
+            background-color: lightblue;
+        }    
+       
+        .comida {
+            border-radius: 100%;
+            position: absolute;
+        }
+    </style>
+    <script>
+	
+        //Defino variables globales
+        var altura = 500;		
+        var contador = 0;
+        var valor1;        
+        var cantComida;
+         
+         	
+         //Funcion para crear la comida, le doy su clase, le digo el color aleatorio que tendra, su sitio de aparicion, el onlick, su id.
+        function crearComida() {			
+			
+			var comidita = document.createElement("div"); //crear capa          
+			
+			comidita.className = "comida"; //asigna clase			
+			
+			//Color aleatorio
+            var newColor = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+			
+			comidita.style.backgroundColor = newColor;
+           
+		   //posición horizontal aleatorio
+			comidita.style.left = getRand(0, 1300) + "px"; // para darle la posicion horizontal aleatoria utilizo otra funcion que esta desarrollada abajo. 
+           
+		   //Top comienza en lo alto del agua
+			comidita.style.top = 50 + "px";
+			
+			//crea tamaño de circulo de forma aleatoria
+			
+			var tamano = ((Math.random() * 100)+10);	
+			
+			comidita.style.width = tamano + "px" ;
+			comidita.style.height = tamano  + "px" ;
+			
+            document.getElementById("pecera").appendChild(comidita); //agregamos la capa comida a la pecera
+            //Le doy un  + "comida" al id para que se diferencie del id de pez y asi tendre 1 2 3 para los peces y 1comida 2comida 3comida para las comidas
+            comidita.id = contador + "comida";
+			contador++;
+            //Asignamos el evento onclick a la funcion seleccion
+			comidita.onclick = seleccion;
+            //Aqui llamo a la funcion caidaComida para el movimiento
+            caidaComida(comidita.id);
+        }
+         //Funcion con intervalo para generar el movimiento(caida) de la comida
+        function caidaComida(id) {
+			//Obtengo el objeto capa de la comida
+            var miComida = document.getElementById(id);
+			//Incrementa el top hasta que llega a 420
+            var idinterval = setInterval(function () {
+				//CAlcula su top lo mismo que offsetTop
+                var topreal = parseInt(miComida.style.top);
+                if (topreal < 625) {
+                    miComida.style.top = (topreal += 2) + "px";
+                } else {
+                    clearInterval(idinterval);
+                }
+            }, 20)
+        }
+		
+		
+        function seleccion(pecera) {
+            			 
+               pecera.parentNode.removeChild(comida);
+            }
+         
+
+        function borrar(comida) {
+
+            comida.parentNode.removeChild(comidita);
+
+        }
+
+        function getRand(min, max) { //esta funcion ayuda a crear la posicion de forma aleatoria
+            return Math.random() * (max - min) + min;
+        }
+    </script>
+</head>
+
+<body onload="inicio()">
+    <div id="content">
+        <div id="buttons">
+            <button id="botonLlenar" onclick="seleccion()">BORRAR</button>
+            <button id="botonComida" onclick="crearComida()">CREAR</button>
+        </div>
+
+        <div id="nPez">
+            <span id="comida"></span>
+        </div>
+        <div id="pecera"> 
+        </div>
+
+
+    </div>
+</body>
+
+</html>

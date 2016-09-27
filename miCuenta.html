@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Adivina el numero</title>
+	<script>
+		
+//crea numero aleatorio
+var aleatorio= Math.floor((Math.random()*10)+1);
+console.log(aleatorio);
+var intervalo;
+function iniciar(){
+	
+	var cuenta=10;
+	document.getElementById("okbtn").disabled=true;//habilita el boton ok 
+	
+	intervalo=setInterval(function(){
+		if ((cuenta>0) && (aleatorio != document.getElementById("numero").value)){
+			cuenta--;
+			document.getElementById("micuenta").innerHTML=cuenta;
+		} else if ((cuenta == 0) && (aleatorio != document.getElementById("numero").value)){
+			document.getElementById("okbtn").disabled=false; //deshabilita el boton ok 
+			clearInterval(intervalo);
+			document.getElementById("resultado").innerHTML="TIEMPO AGOTADO";
+		} 
+	},1000);	
+}
+
+function numAleatorio(){
+		
+	if (aleatorio == document.getElementById("numero").value){
+		document.getElementById("resultado").innerHTML="HAS ACERTADO";
+		clearInterval(intervalo);		
+		} else {
+		document.getElementById("resultado").innerHTML="SIGUE INTENTANDO";
+		} 		
+	
+}
+</script>
+</head>
+<body>
+	
+<h1>Adivina el numero que estoy pensando del 1 al 10</h1>	
+<form>	
+	<div id="micuenta">10</div>
+	<input type="button" id="okbtn" value="Empezar" onclick="iniciar()">
+</form>
+<form>introduzca un número:<br>
+  	<input type="number" id="numero">
+  	<input type="button" id="okbtn" value="OK" onclick="numAleatorio()">
+</form> 
+
+<div id="resultado">¿?</div>
+
+
+
+</body>
+</html>
