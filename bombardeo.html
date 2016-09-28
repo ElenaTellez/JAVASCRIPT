@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<style>
+	
+	#container {
+		width: 800px;
+		height: 400px;
+		position: relative;
+	}
+	
+	#objeto {
+		width: 700px;
+		height: 300px;
+		position: relative;
+	}
+
+	.circulo {
+		position: absolute;
+		border-radius:100%;
+		top: 10px;
+		width:  100px;
+		height:100px;
+	}
+	
+	.bombardeo {
+		position: absolute;
+		border-radius:100%;
+		top: 100px;
+		width:  50px;
+		height: 50px;
+	}
+	
+	.edificio {
+		position: absolute;
+		top: 500px;
+		width:  100px;
+		height: 60px;
+	}
+	
+</style>
+<body>
+
+<p>
+	<button onclick="limpiar()">Borrar Avion</button>
+</p> 
+
+<div id ="container">	
+		<div id ="objeto"></div>
+</div>
+ 
+
+<script>
+	
+	
+	
+	var circu = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	circu.className="circulo"; //Aplicamos una clase, estilos, id y atributos
+  
+	var newColor = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+	circu.style.backgroundColor = newColor;// color aleatorio
+    
+    document.getElementById("container").appendChild(circu); //agregamos la capa circulo a container
+	circu.setAttribute("ondblclick", "lanzarBomba(this)"); // crea el onclick individual
+	
+	seleccion (circu); //doy movimiento al avion
+	
+	crearBloque(circu); //creo cinco edificios de forma aleatoria
+	
+	function seleccion(circu){
+			//circu.offsetLeft
+			 var idinterval = setInterval(function () {
+				//Calcula su left lo mismo que offsetTop calcula el top
+                var posicion = circu.offsetLeft;
+			
+                if (posicion < 1000) {
+                    circu.style.left = (posicion += 2) + "px";
+                } else {
+					posicion == 1000
+                    circu.style.left = 0 + "px";
+                }
+            }, 40)	
+            
+	}
+	
+function crearBloque(circu){        
+			
+    for (var i=0; i<5; i++){
+    
+    var bloque = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+			
+	bloque.className="edificio"; //Aplicamos una clase, estilos, id y atributos
+  
+	var newColor = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+	bloque.style.backgroundColor = newColor;// color aleatorio
+	
+	var lugar = ((Math.random() * 1000)+10); // creo lugar del bloque de forma aleatoria	
+			
+	bloque.style.left = lugar + "px"; // Ojo controlar que los edificios no caigan unos sobre otro
+	   
+    document.getElementById("container").appendChild(bloque); //agregamos la capa circulo a container
+	}    
+} 
+
+	function lanzarBomba(){
+		
+	var bomba = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	bomba.className="bombardeo"; //Aplicamos una clase, estilos, id y atributos
+  
+	var newColor = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+	bomba.style.backgroundColor = newColor;// color aleatorio
+    
+    bomba.style.left = circu.style.left;
+    
+	document.getElementById("container").appendChild(bomba); //agregamos la capa circulo a container
+	caida (bomba); //doy movimiento a la bomba
+	
+	function caida(bomba) {
+			//Incrementa el top hasta que llega a 500
+            var idinterval = setInterval(function () {
+								
+				var topreal = bomba.offsetTop;
+                
+                if (topreal < 500) {
+                    bomba.style.top = (topreal += 2) + "px";
+                } else {
+                    clearInterval(idinterval);
+                    bomba.parentNode.removeChild(bomba);
+                    //aqui me falta explosion al caer al suelo
+				}
+            }, 20)
+            
+        }
+}
+
+function limpiar(){
+		
+			var todasCapas = document.querySelectorAll(".circulo");//borra todas las clases circulos
+		
+			//todasCapas=document.getElementsByClassName("circulo"); Con este metodo hay que usar while no  for
+			
+			for (var i=0; i<todasCapas.length; i++){
+				todasCapas[i].parentNode.removeChild(todasCapas[i]);
+				}
+	}	 
+</script>
+
+</body>
+</html>

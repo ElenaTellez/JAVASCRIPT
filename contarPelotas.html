@@ -25,10 +25,16 @@
 	<button onclick="genera()">Genera</button>
 	<button onclick="limpiar()">Limpia</button>
 </p> 
+<div id="contando">
+		<span id="bola">Numero de Bola:</span>
+            <br>
+        <span id="clicks">Numero de Clicks:</span>
+</div> 
 
 <div id ="container">	
 		<div id ="objeto"></div>
- </div>
+</div>
+ 
 
 <script>
 	
@@ -53,19 +59,21 @@
 			
 		circu.style.width = tamano + "px";
 		circu.style.height = tamano  + "px";
-			
+		circu.value=0;	
 		circu.setAttribute("id", "circulo" + contador); //crea bolas individualizadas y numeradas		
 		contador++;
 		document.getElementById("container").appendChild(circu); //agregamos la capa circulo a container
-		circu.setAttribute("onClick", "seleccionBorra(" + circu.id + ")"); // crea el onclick individual
+		circu.setAttribute("onclick", "seleccion(this)"); // crea el onclick individual
 	}
    
 	function getRand(min, max) { //esta funcion ayuda a crear la posicion de forma aleatoria
 		return Math.random() * (max - min) + min;
 	}	
 	
-	function seleccionBorra(circu){
-		circu.parentNode.removeChild(circu);
+	function seleccion(circu){
+			circu.value++;
+			document.getElementById("clicks").innerHTML = "Numero de Circulo: " + circu.id  ;
+			document.getElementById("bola").innerHTML = "Numero de Clicks: " + circu.value  ;
     }
   //var todasCapas;
     
@@ -85,3 +93,4 @@
 
 </body>
 </html>
+

@@ -16,7 +16,8 @@
 
 	.circulo {
 		position: absolute;
-		border-radius:100%;
+		border-radius:100%;		
+		left: 1px;
 	}
 </style>
 <body>
@@ -28,7 +29,8 @@
 
 <div id ="container">	
 		<div id ="objeto"></div>
- </div>
+</div>
+ 
 
 <script>
 	
@@ -43,29 +45,41 @@
 		circu.style.backgroundColor = newColor;// color aleatorio
      
 		   //posición horizontal aleatorio
-		circu.style.left = getRand(0, 700) + "px"; // para darle la posicion horizontal aleatoria utilizo otra funcion que esta desarrollada abajo. 
-           
+		//circu.style.left = getRand(0, 800) + "px"; // para darle la posicion horizontal aleatoria utilizo otra funcion que esta desarrollada abajo. 
+       circu.style.top = getRand(0, 600) + "px";   
 		   //Top comienza en la parte alta del container
-		circu.style.top = getRand(0, 300) + "px";
+		
 			
 			//crea tamaño de circulo de forma aleatoria
 		var tamano = ((Math.random() * 100)+10);	
 			
 		circu.style.width = tamano + "px";
 		circu.style.height = tamano  + "px";
-			
+		circu.value=0;	
 		circu.setAttribute("id", "circulo" + contador); //crea bolas individualizadas y numeradas		
 		contador++;
 		document.getElementById("container").appendChild(circu); //agregamos la capa circulo a container
-		circu.setAttribute("onClick", "seleccionBorra(" + circu.id + ")"); // crea el onclick individual
+		circu.setAttribute("ondblclick", "seleccion(this)"); // crea el onclick individual
 	}
    
 	function getRand(min, max) { //esta funcion ayuda a crear la posicion de forma aleatoria
 		return Math.random() * (max - min) + min;
 	}	
 	
-	function seleccionBorra(circu){
-		circu.parentNode.removeChild(circu);
+	function seleccion(circu){
+			//circu.offsetLeft
+			 var idinterval = setInterval(function () {
+				//Calcula su left lo mismo que offsetTop calcula el top
+                var posicion = circu.offsetLeft;
+			
+                if (posicion < 1000) {
+                    circu.style.left = (posicion += 2) + "px";
+                } else {
+					posicion == 1000
+                    circu.style.left = 0 + "px";
+                }
+            }, 20)	
+			
     }
   //var todasCapas;
     
