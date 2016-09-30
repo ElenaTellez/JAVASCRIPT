@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<style>
+		
+	#container {
+		width: 1500px;
+		height: 600px;
+		position: relative;	
+		background: url(image/campo.jpeg) no-repeat center;
+		background-size: 100%;
+	
+		 
+	}
+	
+	#objeto {
+		width: 700px;
+		height: 300px;
+		position: relative;
+	}
+
+	.circulo {
+		position: absolute;
+		border-radius:100%;
+		top: 10px;
+		width:  200px;
+		height:200px;
+		background-repeat: no-repeat;
+        background-position: center;
+	}
+	
+	.bombardeo {
+		position: absolute;
+		border-radius:100%;
+		top: 100px;
+		width:  50px;
+		height: 50px;
+		background-repeat: no-repeat;
+        background-position: center;
+	}
+	
+	.edificio {
+		position: absolute;
+		top: 515px;
+		width:  80px;
+		height: 90px;
+		background-repeat: no-repeat;
+        background-position: center;
+	}
+	
+</style>
+<body>
+
+<p>
+	<button onclick="limpiar()">Recolectar</button>
+</p> 
+
+<div id ="container">	
+		<div id ="objeto"></div>
+</div>
+ 
+
+<script>
+	
+	var contador = 0;
+	
+	var ancho = 100;
+	
+	var limite = 1;
+	
+	var circu = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	circu.className="circulo"; //Aplicamos una clase, estilos, id y atributos
+  
+	
+	circu.style.backgroundImage = "url(image/granjero.jpeg)";
+    
+    document.getElementById("container").appendChild(circu); //agregamos la capa circulo a container
+	circu.setAttribute("onclick", "lanzarBomba(this)"); // crea el onclick individual
+	
+	seleccion (circu); //doy movimiento al avion
+	
+	crearBloque(circu); //creo cinco edificios de forma aleatoria
+	
+	function seleccion(circu){
+			//circu.offsetLeft
+			 var idinterval = setInterval(function () {
+				//Calcula su left lo mismo que offsetTop calcula el top
+                var posicion = circu.offsetLeft;
+			
+                if (posicion < 1000) {
+                    circu.style.left = (posicion += 2) + "px";
+                } else {
+					posicion == 1000
+                    circu.style.left = 0 + "px";
+                }
+            }, 40)	
+            
+	}
+	
+function crearBloque(circu){        
+			
+   for (var i=0; i<5; i++){	
+    
+    var bloque = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+			
+	bloque.className="edificio"; //Aplicamos una clase, estilos, id y atributos
+  
+	bloque.style.backgroundImage = "url(image/maceta.jpeg)";	
+	
+	var lugar = (Math.floor((Math.random() * ancho)+limite)); // creo lugar del bloque de forma aleatoria	
+			
+	bloque.style.left = lugar + bloque.style.width + "px"; // Ojo controlar que los edificios no caigan unos sobre otro	
+	
+	document.getElementById("container").appendChild(bloque); //agregamos la capa circulo a container
+	bloque.id =contador + "edificio" ;
+	contador++;
+	ancho += 150;
+	limite += 100;
+	console.log(bloque.id) 
+	}    
+} 
+
+	function lanzarBomba(){
+		
+	var bomba = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	bomba.className="bombardeo"; //Aplicamos una clase, estilos, id y atributos
+  
+	bomba.style.left = circu.style.left;
+	bomba.style.backgroundImage = "url(image/semillas.jpeg)";
+    
+	document.getElementById("container").appendChild(bomba); //agregamos la capa circulo a container
+	caida (bomba); //doy movimiento a la bomba
+	
+	function caida(bomba) {
+			//Incrementa el top hasta que llega a 550
+            var idinterval = setInterval(function () {
+								
+				var topreal = bomba.offsetTop;
+				               
+                if (topreal < 550) {
+                    bomba.style.top = (topreal += 2) + "px";
+                } else if (topreal == 550){                     
+                    bomba.style.backgroundImage = "url(image/planta.jpeg)";//cambia imagen al llegar al suelo
+				//} else if ((topreal == 550)&&((bomba.style.left > (bloque.style.left - 40))&&(bomba.style.left < (bloque.style.left + 40)))){   
+				}else if ((topreal == 550) && ((bomba.style.left > bloque.offsetLeft)	&& (bomba.style.left > bloque.offsetRight))){
+					bomba.style.backgroundImage = "url(image/macetaflor1.jpeg)";//cambia imagen al llegar al suelo
+				} else {
+                    clearInterval(idinterval);
+                }  
+            }, 20)
+            
+        }
+}
+
+function limpiar(){		
+			var todasCapas = document.querySelectorAll(".bombardeo");//borra todas las clases circulos
+		
+			//todasCapas=document.getElementsByClassName("bombardeo"); Con este metodo hay que usar while no  for
+			
+			for (var i=0; i<todasCapas.length; i++){
+				todasCapas[i].parentNode.removeChild(todasCapas[i]);
+				}
+	}	 
+</script>
+
+</body>
+</html>
