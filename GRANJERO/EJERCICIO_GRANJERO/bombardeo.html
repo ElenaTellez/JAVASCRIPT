@@ -3,12 +3,11 @@
 <style>
 		
 	#container {
-		width: 1500px;
+		width: 1200px;
 		height: 600px;
 		position: relative;	
 		background: url(image/campo.jpeg) no-repeat center;
 		background-size: 100%;
-	
 		 
 	}
 	
@@ -47,53 +46,81 @@
         background-position: center;
 	}
 	
+	.flores {
+		position: absolute;
+		border-radius:100%;
+		top: 325px;
+		width:  100px;
+		height: 300px;
+		background-repeat: no-repeat;
+        background-position: center;
+	}
+	
 </style>
 <body>
 
 <p>
-	<button onclick="limpiar()">Recolectar</button>
+	<button onclick="limpiar()">Limpiar malas hierbas</button>
+	<div id="semilla">Semillas usadas:</div>
+	<div id="germina">Flores conseguidas:</div>
 </p> 
 
-<div id ="container">	
-		<div id ="objeto"></div>
-</div>
+
+
+<div id ="container">
+	</div>
  
 
 <script>
 	
-	var contador = 0;
-	
-	var ancho = 100;
-	
-	var limite = 1;
+	var contador = 0;	
+	var ancho = 1;	
+	var limite = 300;
+	var semillas = 0;
+	var germinan = 0;
 	
 	var circu = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
-	circu.className="circulo"; //Aplicamos una clase, estilos, id y atributos
-  
-	
-	circu.style.backgroundImage = "url(image/granjero.jpeg)";
-    
+	circu.className="circulo"; //Aplicamos una clase, estilos, id y atributos  	
+	circu.style.backgroundImage = "url(image/granjero.jpeg)";    
     document.getElementById("container").appendChild(circu); //agregamos la capa circulo a container
 	circu.setAttribute("onclick", "lanzarBomba(this)"); // crea el onclick individual
 	
-	seleccion (circu); //doy movimiento al avion
+	seleccion(circu); //doy movimiento al avion
 	
 	crearBloque(circu); //creo cinco edificios de forma aleatoria
 	
 	function seleccion(circu){
-			//circu.offsetLeft
+			
 			 var idinterval = setInterval(function () {
 				//Calcula su left lo mismo que offsetTop calcula el top
                 var posicion = circu.offsetLeft;
 			
-                if (posicion < 1000) {
+                if (posicion < 1100) {
                     circu.style.left = (posicion += 2) + "px";
                 } else {
-					posicion == 1000
-                    circu.style.left = 0 + "px";
+                    circu.style.left = -100 + "px";
                 }
-            }, 40)	
+            }, 30)	
             
+	}
+	
+	function crearFlor(bomba){	 		
+		var flor = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+		flor.className="flores"; //Aplicamos una clase, estilos, id y atributos
+		var tipoFlor = Math.floor(getRand(1, 5));
+		flor.style.backgroundImage = "url(image/macetaflor" + tipoFlor + ".jpeg)";	
+		flor.style.left = bomba.style.left;	
+		document.getElementById("container").appendChild(flor); 
+		var cuenta=5;
+		var intervalo=setInterval(function(){
+		if (cuenta>0){
+			cuenta--;
+			} else {
+			flor.parentNode.removeChild(flor);
+			clearInterval(intervalo);
+			}
+		},1000)
+		
 	}
 	
 function crearBloque(circu){        
@@ -105,17 +132,14 @@ function crearBloque(circu){
 	bloque.className="edificio"; //Aplicamos una clase, estilos, id y atributos
   
 	bloque.style.backgroundImage = "url(image/maceta.jpeg)";	
-	
-	var lugar = (Math.floor((Math.random() * ancho)+limite)); // creo lugar del bloque de forma aleatoria	
-			
-	bloque.style.left = lugar + bloque.style.width + "px"; // Ojo controlar que los edificios no caigan unos sobre otro	
+				
+	bloque.style.left = getRand(ancho, limite)+ "px"; // Creo lugar de macetas de forma aleatoria. 
 	
 	document.getElementById("container").appendChild(bloque); //agregamos la capa circulo a container
 	bloque.id =contador + "edificio" ;
 	contador++;
-	ancho += 150;
-	limite += 100;
-	console.log(bloque.id) 
+	ancho += 200;
+	limite += 200;
 	}    
 } 
 
@@ -128,38 +152,61 @@ function crearBloque(circu){
 	bomba.style.backgroundImage = "url(image/semillas.jpeg)";
     
 	document.getElementById("container").appendChild(bomba); //agregamos la capa circulo a container
-	caida (bomba); //doy movimiento a la bomba
+	semillas++;
 	
+	caida (bomba); //doy movimiento a la bomba
+}
+
 	function caida(bomba) {
 			//Incrementa el top hasta que llega a 550
             var idinterval = setInterval(function () {
 								
-				var topreal = bomba.offsetTop;
+				var topreal = bomba.offsetTop;			
 				               
                 if (topreal < 550) {
                     bomba.style.top = (topreal += 2) + "px";
-                } else if (topreal == 550){                     
+                } else if (comprobar(bomba.offsetLeft)){					
+					crearFlor(bomba); 
+					bomba.parentNode.removeChild(bomba);
+					clearInterval(idinterval);	
+				} else {                     
                     bomba.style.backgroundImage = "url(image/planta.jpeg)";//cambia imagen al llegar al suelo
-				//} else if ((topreal == 550)&&((bomba.style.left > (bloque.style.left - 40))&&(bomba.style.left < (bloque.style.left + 40)))){   
-				}else if ((topreal == 550) && ((bomba.style.left > bloque.offsetLeft)	&& (bomba.style.left > bloque.offsetRight))){
-					bomba.style.backgroundImage = "url(image/macetaflor1.jpeg)";//cambia imagen al llegar al suelo
-				} else {
-                    clearInterval(idinterval);
+					clearInterval(idinterval); 
                 }  
-            }, 20)
-            
+            }, 10)
+        document.getElementById("semilla").innerHTML = "Semillas usadas: " + semillas;    
         }
-}
 
-function limpiar(){		
-			var todasCapas = document.querySelectorAll(".bombardeo");//borra todas las clases circulos
-		
-			//todasCapas=document.getElementsByClassName("bombardeo"); Con este metodo hay que usar while no  for
+
+	function limpiar(){		
+			var todasCapas = document.querySelectorAll(".bombardeo");//borra todas las malas hierbas
 			
 			for (var i=0; i<todasCapas.length; i++){
 				todasCapas[i].parentNode.removeChild(todasCapas[i]);
 				}
-	}	 
+	}	
+	
+	function getRand(min, max) {
+            return Math.random() * (max - min) + min;
+        } // funcion que crea los trozos en los que van los edificios para que no se solapen	 
+
+	
+	
+	function comprobar(posicion){
+			var comprobar = false;		
+			var todasMacetas = document.querySelectorAll(".edificio");//creo array con todas las macetas
+			for (var i=0; i<todasMacetas.length; i++){
+				if ((posicion > todasMacetas[i].offsetLeft)&&(posicion < (todasMacetas[i].offsetLeft + 80))){
+				todasMacetas[i].parentNode.removeChild(todasMacetas[i]);
+				germinan++;
+				document.getElementById("germina").innerHTML = "Flores conseguidas: " + germinan;
+				comprobar=true;					
+				}
+			}
+			
+			return comprobar;
+	}
+
 </script>
 
 </body>

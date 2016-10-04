@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+    <title>Carrera Caracoles</title>
+<style>
+	body {
+		background-color: pink;
+		}
+	
+	#container {
+		width: 1200px;
+		height: 525px;
+		position: relative;
+		background-color: #cccccc;
+	}
+	
+	.circulo {
+		position: absolute;
+		border-radius:25%;		
+		left: 1px;
+		width: 100px;
+		height: 100px;
+		background-repeat: no-repeat;
+        background-position: center;
+		
+	}
+
+</style>
+</head>
+<body>
+
+<form action="#">
+	<p> Por favor elija el número de participantes en la carrera de 2 a 5:	
+		<input type="number" id="participantes" min="2" max="5" required autofocus></p>
+	<p>Apuesta por: 
+		<input type="number" id="elegido" min="1" max="5" required></p>
+	<p>Cantidad a apostar:	
+		<input type="number" id="apuesta" step="100" min="100" required></p>	
+	<p>Disponible:
+		<div id="disponible"></div></p>
+	<input type="submit"  onclick="genera()" value="Generar Participantes" id="ok">
+</form>	
+
+
+<p>
+	<button id="okbtn" onclick="correr()">Correr</button>
+	
+	<button  onclick="limpiar()">Reanudar</button>
+</p> 
+
+<div id="resultado"> ¿QUIEN GANARA? </div>
+
+<div id ="container">	
+</div>
+
+<script>
+	
+	var lugar = 10;	
+	var contador = 1;
+	var intervalo;
+	
+	function genera(){ 
+		document.getElementById("ok").disabled=true;
+		var participan = document.getElementById("participantes").value;
+		
+		for (var i = 0; i < participan; i++){ 		
+			
+			var circu = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+			circu.className="circulo"; //Aplicamos una clase, estilos, id y atributos
+			circu.style.top = lugar + "px";
+			lugar += 100;
+			circu.style.backgroundImage = "url(image/caracol" + i +".png)";
+			circu.setAttribute("id", "circulo" + contador); //crea bolas individualizadas y numeradas		
+			contador++;
+			document.getElementById("container").appendChild(circu); //agregamos la capa circulo a container
+			
+		}
+	}
+    	
+	function correr(){	
+			
+		intervalo = setInterval(function () { 	
+			var creados = document.getElementById("participantes").value;
+				for (var i = 0; i < creados; i++){ 				
+					var todasCapas = document.querySelectorAll(".circulo");	
+					var posicion = todasCapas[i].offsetLeft;
+					
+					
+					if (posicion < 1000) {
+						todasCapas[i].style.left = (posicion +=getRand(2,25)) + "px";				
+					}else  {
+						comprobar(todasCapas[i]);
+						
+					}
+				}
+			}, 20)	
+	document.getElementById("okbtn").disabled=true;	
+	}
+	
+	document.getElementById("disponible").innerHTML=500;
+	
+	 
+	function comprobar(circu){
+	var x = parseInt(document.getElementById("disponible").innerHTML);
+		if (circu.id == "circulo" + document.getElementById("elegido").value) {	
+			clearInterval(intervalo);			
+			document.getElementById("resultado").innerHTML="¡EHNORABUENA! HA GANADO EL CORREDOR "  + document.getElementById("elegido").value;
+			document.getElementById("disponible").innerHTML=(x+parseInt(document.getElementById("apuesta").value));	
+			} else {			
+			clearInterval(intervalo);
+			document.getElementById("resultado").innerHTML="HAS PERDIDO";
+			document.getElementById("disponible").innerHTML=(x-document.getElementById("apuesta").value);		
+			} 	
+	}
+	
+  function limpiar(){
+			var todasCapas = document.querySelectorAll(".circulo");
+			
+			for (var i=0; i<todasCapas.length; i++){
+				todasCapas[i].parentNode.removeChild(todasCapas[i]);
+				}			
+			lugar = 10;	
+			contador = 1;
+			document.getElementById("okbtn").disabled=false;	
+			document.getElementById("ok").disabled=false;
+			document.getElementById("resultado").innerHTML="¿QUIEN GANARA?";
+	}
+	
+	function getRand(min, max) { //esta funcion ayuda a crear la velocidad de forma aleatoria
+		return Math.random() * (max - min) + min;
+	}	
+
+	 
+</script>
+
+</body>
+</html>
