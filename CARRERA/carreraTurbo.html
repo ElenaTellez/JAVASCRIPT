@@ -79,22 +79,19 @@
 	}
     	
 	function correr(){	
-			
-		intervalo = setInterval(function () { 	
-			var creados = document.getElementById("participantes").value;
-				for (var i = 0; i < creados; i++){ 				
-					var todasCapas = document.querySelectorAll(".circulo");	
-					var posicion = todasCapas[i].offsetLeft;
-					
-					
+	
+	intervalo = setInterval(function () { 	
+	var todos = document.querySelectorAll(".circulo");
+		for (var i = 0; i < todos.length; i++){				
+			var posicion = todos[i].offsetLeft;
 					if (posicion < 1000) {
-						todasCapas[i].style.left = (posicion +=getRand(2,25)) + "px";				
+						todos[i].style.left = (posicion +=getRand(1,10)) + "px";				
 					}else  {
-						comprobar(todasCapas[i]);
-						
+						comprobar(todos[i]);
 					}
 				}
-			}, 20)	
+			}, 30);	
+		
 	document.getElementById("okbtn").disabled=true;	
 	}
 	

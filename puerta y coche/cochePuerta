@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+    <title>Abrir Puerta</title>
+<style>
+	body {
+		
+		}
+	
+	#container {
+		width: 1200px;
+		height: 200px;
+		background: url(image/camino.jpeg) center;
+		position: relative;
+		
+	}
+	
+	.caracoles {
+		position: absolute;
+		border-radius:25%;		
+		top: 55px;
+		left: 10px;
+		width: 100px;
+		height: 100px;
+		background-repeat: no-repeat;
+        background-position: center;
+		
+	}
+	
+	.puertaAbierta {
+		position: absolute;
+		width: 75px;
+		height: 120px;
+		left: 500px;
+		background-color: blue;
+	}	
+	
+
+</style>
+</head>
+<body>
+
+
+<p>
+	<button id="go" onclick="avanzar()">Avanzar</button>
+	<button  onclick="retroceder()">Retroceder</button>
+	<button  onclick="parar()">Parar</button>
+	<button  onclick="abrir()">Abrir Puerta</button>
+	<button  onclick="cerrar()">Cerrar Puerta</button>
+	
+</p> 
+
+<div id ="container">	
+	
+</div>
+
+<script>
+	
+	var intervalo;
+	var intervaloP;
+	var pasar = true;
+				
+	var caracol = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	caracol.className="caracoles"; //Aplicamos una clase, estilos, id y atributos
+	caracol.style.backgroundImage = "url(image/caracol1.png)";
+	document.getElementById("container").appendChild(caracol); //agregamos la capa circulo a container
+		
+	var puerta = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	puerta.className="puertaAbierta"; //Aplicamos una clase, estilos, id y atributos
+	puerta.style.top="55px";		
+	document.getElementById("container").appendChild(puerta);
+			
+	function avanzar(){	
+	
+	clearInterval(intervalo);
+	
+	intervalo  = setInterval(function () { 				
+		
+		var posicion = caracol.offsetLeft;
+			
+		if ((posicion>400)&&(puerta.offsettop=55))  {
+			clearInterval(intervalo);
+			} else if (posicion<1000){
+				caracol.style.left = (posicion +=2) + "px";	
+				}else { 
+					clearInterval(intervalo);
+				}
+				
+		}, 20);	
+	
+	}
+	
+	
+	function retroceder(){	
+	
+	clearInterval(intervalo);
+	
+	intervalo = setInterval(function () { 				
+	var posicion = caracol.offsetLeft;
+			if (posicion > 0){
+				caracol.style.left = (posicion -=2) + "px";				
+					} else  {
+						clearInterval(intervalo);
+					}
+				
+			}, 20);	
+		
+	}
+	
+	function parar(){	
+		clearInterval(intervalo);	
+	}
+	
+	function abrir(){	
+		
+		intervaloP = setInterval(function () { 				
+		var posicion = puerta.offsetTop;
+			if (posicion > 0){
+				puerta.style.top = (posicion -=2) + "px";				
+					} else  {
+						clearInterval(intervaloP);
+					}
+				
+			}, 20);	
+	}
+		 
+	function cerrar(){	
+		
+		intervaloP = setInterval(function () { 				
+		var posicion = puerta.offsetTop;
+			if (posicion < 55){
+				puerta.style.top = (posicion +=2) + "px";				
+					} else  {
+						clearInterval(intervaloP);
+					}
+				
+			}, 20);
+			
+			}
+	</script>
+
+</body>
+</html>
