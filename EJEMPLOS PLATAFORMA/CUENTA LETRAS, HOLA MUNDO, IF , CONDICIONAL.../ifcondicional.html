@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+<script>
+function comprobar(){
+    var numero = document.getElementById("edad").value;
+    var txt;
+    //console.log(numero);
+    txt=(numero>=18)?"Mayor":"Menor";
+    /* if (numero>=18) txt="Mayor";
+        else txt="Menor";
+    */
+    //console.log(txt);
+    document.getElementById("mensaje").innerHTML=txt;
+}
+</script>   
+</head>    
+<body>
+Edad:<input type="number" id="edad" onkeyup="comprobar()" >
+<div id="mensaje"></div>    
+</body>
+</html>

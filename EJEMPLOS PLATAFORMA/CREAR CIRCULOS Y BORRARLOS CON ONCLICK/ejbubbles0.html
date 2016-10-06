@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documento sin ttulo</title>
+<style>
+#contenedor{
+	width:800px;
+	height:600px;
+	position:absolute;	
+}
+
+.bubble{
+		position:absolute;
+		border-radius:50%;
+}
+
+</style>
+<script>
+var contador_capaid =0;
+
+/*var padre;
+window.onload=function(){
+    padre=document.getElementById("contenedor");
+}*/
+
+//Crea cada bolita
+function creabubble(){
+    
+		//Crea nueva capa
+		var bolita = document.createElement("div");
+		
+		bolita.className = "bubble";//le asigno una clase
+		
+		
+		//lo posiciono aleatoriamente
+		var superior = Math.floor(Math.random()*600);
+		bolita.style.top = superior+"px";
+		
+		var izda = Math.floor(Math.random()*800);
+		bolita.style.left = izda+"px"; 
+		
+		//Tamaño aleatorio ancho y alto iguales
+		var tamano = Math.floor(Math.random()*100) + 10;
+		bolita.style.width = tamano + "px";		
+		bolita.style.height = tamano + "px";
+		
+		//Color aleatorio	
+		var coloraleatorio = "rgb(" + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + ")";
+		
+	
+		bolita.style.backgroundColor=coloraleatorio;
+		
+		//Le asigno un valor=0 que usare para 
+		//contador interno
+		bolita.value = 0;
+		
+		//Asignamos un nuevo id a la nueva capa
+		contador_capaid ++;		
+		bolita.id = "capa" + contador_capaid;
+		//console.log("crea capa id=" + contador_capaid);
+		
+		//Le asigno el onclick
+//bolita.onclick=eliminabubble;
+bolita.setAttribute("onclick","eliminabubble(this)");
+		
+		//Lo añado al contenedor	
+document.getElementById("contenedor").appendChild(bolita);
+
+}
+
+//Elimina la capa que se lo pasa como this
+function eliminabubble(micapita){
+    console.log("capa a eliminar=" + micapita.id);
+    //this es el objeto al que le he hecho onclick
+    //parentNode es su capa contenedora
+    //como para eliminar un elemento tenemos que 
+    //llamar a su padre this.parentNode
+    //a su padre hay que especificarle que objeto hijo
+    //borramos que es this removechild(this)
+    micapita.parentNode.removeChild(micapita);
+    
+    //padre.removeChild(this);
+//document.getElementById("contenedor").removeChild(this);
+    
+}
+
+function limpiar(){
+    var todascapas= document.querySelectorAll(".bubble");
+    
+    for (var i=0;i<todascapas.length;i++){
+todascapas[i].parentNode.removeChild(todascapas[i]);   
+    }
+}
+
+</script>
+
+</head>
+
+<body>
+<button id="boton" onclick="creabubble()">Crear</button>
+<button id="limpia" onclick="limpiar()">Limpiar</button>
+<div id="contenedor"></div>
+
+</body>
+</html>

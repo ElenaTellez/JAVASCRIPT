@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+<script>
+var cuenta=0;
+//Se ejecuta contador() cada segundo
+window.setInterval("contador()","1000");
+
+//Es llamada por setInterval
+function contador(){
+    cuenta++;
+    document.getElementById("capa").innerHTML=cuenta;
+}
+    
+var cuenta2=0;    
+function contador2(){
+    cuenta2++;    document.getElementById("capa2").innerHTML=cuenta2;
+
+    window.setTimeout("contador2()","1000");
+}
+    
+window.onload=function(){
+    contador2();    
+}
+
+</script>
+</head>
+    
+<body>
+<div id="capa"></div>
+<hr>
+<div id="capa2"></div>
+    
+</body>
+</html>

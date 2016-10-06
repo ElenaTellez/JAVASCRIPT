@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documento sin título</title>
+<style>
+#barra{
+	height:50px;
+}
+</style>
+<script type="text/javascript">
+var contador;
+var intervalo;
+
+//Comienza programa
+function aceptar(){
+	clearInterval(intervalo);
+	//inicializo contador
+	contador=1;
+	//Define intervalo 
+	//Ejecuta la funcion pinta cada 
+	//milisegundos definido en el campo tiempo
+	intervalo=setInterval("pinta()",document.getElementById("tiempo").value);	
+}
+
+function pinta(){
+	//Incremento contador
+	contador++;
+	//Cambiamos color de la capa barra		
+	document.getElementById("barra").style.background=document.getElementById("colorbarra").value;
+	//Actualiza
+	document.getElementById("porcentaje").innerHTML=contador;
+	//Actualiza el ancho de la capa
+	document.getElementById("barra").style.width=contador + "px";
+	
+	//Si el contador = longitud se para el intervalo
+	if (contador==document.getElementById("longitud").value) 
+		clearInterval(intervalo);	
+	
+}
+
+
+</script>
+
+
+</head>
+
+<body>
+Longitud:<input type="number" id="longitud"><br>
+Color:<input type="color" id="colorbarra"><br>
+tiempo x pixel:<input type="number" id="tiempo"><br>
+<button id="aceptar" onclick="aceptar()">Aceptar</button><br>
+<span id="porcentaje">0</span>%<br>
+<div id="barra"></div>
+</body>
+</html>

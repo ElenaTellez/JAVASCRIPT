@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jesús Caballero">
+    <title>Examen Java Script</title>
+	<style>
+        body{
+            margin:0px;
+            padding: 0px;
+            font-family: serif;
+            color: black;
+            z-index: -100;
+            background-color: white;
+        }
+        #controles{
+            width: 590px;
+            height: 80px;
+            border: 5px solid black;
+            margin-bottom: 10px;
+        }
+        #botonNuevo{
+            position: relative;
+            left: 250px;
+            top: 10px;
+        }
+        #gameOver{
+            position: absolute;
+            display: none;
+            left:250px;
+            top:50px;
+        }
+        #nivel{
+            position: absolute;
+            top:50px;
+            left: 10px;
+        }
+        #contenedor{
+            position: absolute;
+            width: 600px;
+            height: 400px;
+            background-color: black;
+        }
+        #pacman{
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-image: url(images/pacman.png);
+            //left:560px;
+            //top:360px;
+            z-index: 1;
+        }
+        #fantasma{
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-image: url(images/ghost.png);
+            z-index: 2;
+        }
+        .cereza{
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-image: url(images/cherry.png);
+        }
+    </style>
+    <script>
+        //Creo variables globales
+        var nivel = 1;
+        var idCereza = 0;
+        var pacman;
+        var fantasma;
+        var tiempoTimeout = 50;
+        
+        //Función para comenzar la partida
+        function nuevaPartida(){
+            
+            //Elimino todas las capas dentro del contenedor
+            var capasContenedor = document.querySelectorAll("#contenedor div");
+            for(var i = 0;i < capasContenedor.length;i++){
+                capasContenedor[i].parentNode.removeChild(capasContenedor[i]);
+            }
+            
+            //Oculto el mensaje de game over y restablezco el nivel
+            document.getElementById("gameOver").style.display = "none";
+            nivel = 1;
+            document.getElementById("nivel").innerHTML = "Nivel: " + nivel;
+            
+            //Creo el pacman y el fantasma y le asigno las id
+            pacman = document.createElement("div");
+            fantasma = document.createElement("div");
+            pacman.id = "pacman";
+            fantasma.id = "fantasma";
+            
+            //Les asigno una posición aleatoria dentro del contenedor.
+            var topPacman = Math.floor(Math.random()*360);
+            pacman.style.top = topPacman + "px";
+            var leftPacman = Math.floor(Math.random()*560);
+            pacman.style.left = leftPacman + "px";
+            var topFantasma = Math.floor(Math.random()*360);
+            fantasma.style.top = topFantasma + "px";
+            var leftFantasma = Math.floor(Math.random()*560);
+            fantasma.style.left = leftFantasma + "px";
+            
+            //Le añado el atributo onclick al pacman para moverse de posicion.
+            pacman.setAttribute("onclick","nuevaPosicion()");
+
+            //Añado el pacman y el fantasma al contenedor
+            document.getElementById("contenedor").appendChild(pacman);
+            document.getElementById("contenedor").appendChild(fantasma);
+            
+            //Deshabilito el boton nueva partida
+            document.getElementById("botonNuevo").disabled = true;
+            
+            //Llamo a la funcion perseguir
+            perseguir();
+        }
+        
+        //Funcion para cambiar la posición del pacman
+        function nuevaPosicion(){
+            
+            //Creo la capa cereza y le asigno clase,id y la posición actual de pacman
+            var cereza = document.createElement("div");
+            cereza.id = "cereza" + idCereza;
+            cereza.className = "cereza";
+            idCereza++;
+            cereza.style.top = pacman.offsetTop + "px";
+            cereza.style.left = pacman.offsetLeft + "px";
+            
+            //Le cambio la posición a pacman
+            var topPacman = Math.floor(Math.random()*360);
+            pacman.style.top = topPacman + "px";
+            var leftPacman = Math.floor(Math.random()*560);
+            pacman.style.left = leftPacman + "px";
+            
+            //Aumento el nivel de la partida
+            nivel++;
+            document.getElementById("nivel").innerHTML = "Nivel: " + nivel;
+            
+            //Pinto una cereza
+            document.getElementById("contenedor").appendChild(cereza);
+        }
+        
+        //Función perseguir
+        function perseguir(){
+            //debugger;
+            //Recojo las posiciones actuales del fantasma y del pacman
+            var topFantasma = fantasma.offsetTop;
+            var leftFantasma = fantasma.offsetLeft;
+            var topPacman = pacman.offsetTop;
+            var leftPacman = pacman.offsetLeft;
+            
+            //Compruebo la distancia entre ellos para moverlos
+            if(leftFantasma < leftPacman){
+                leftFantasma++;
+                fantasma.style.left = leftFantasma + "px";
+            } else if(leftFantasma > leftPacman){
+                leftFantasma--;
+                fantasma.style.left = leftFantasma + "px";
+            }
+            if(topFantasma < topPacman){
+                topFantasma++;
+                fantasma.style.top = topFantasma + "px";
+            } else if(topFantasma > topPacman){
+                topFantasma--;
+                fantasma.style.top = topFantasma + "px";
+            }
+            
+            //Llamo recursivamente a la funcion perseguir 
+            //hasta que el fantasma alcance al pacman
+            if(leftFantasma == leftPacman && topFantasma == topPacman){
+                //Habilito el boton nueva partida y muestro el cartel de game over.
+                document.getElementById("botonNuevo").disabled = false;
+                document.getElementById("gameOver").style.display = "block";
+                //Elimino la capa pacman.
+                pacman.parentNode.removeChild(pacman);
+                
+            } else { //Si no lo alcanza lo vuelve a llamar
+                setTimeout("perseguir()",(tiempoTimeout/nivel));
+            }
+        }
+    </script>
+</head>
+    
+<body>
+    <div id="controles">
+        <button id="botonNuevo" onclick="nuevaPartida()">Nueva Partida</button>
+        <div id="gameOver">GAME OVER!!!</div>
+        <div id="nivel">Nivel: </div>
+    </div>
+    
+    <div id="contenedor">
+        
+    </div>
+    
+</body>
+</html>

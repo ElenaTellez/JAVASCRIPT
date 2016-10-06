@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documento sin título</title>
+<script>
+//Declaro vbles
+var aleatorio;
+var cuentaintentos;
+var contador;
+var intervalo;
+var agotado;
+
+//Funcion inicial
+function empezar(){
+	//Inicializo vbles
+	cuentaintentos=0;
+	aleatorio= Math.floor((Math.random()*10)+1);
+	console.log(aleatorio);
+	agotado=false;
+	contador=10;
+	document.getElementById("cuenta").innerHTML=contador;
+	clearInterval(intervalo);
+	//Lanzamos el interval
+	//llama a la función muestra cada 1seg
+	intervalo = setInterval("muestra()",1000);
+}
+
+//Actualiza el valor del contador
+function muestra(){
+	//decremento
+	contador--;
+	//Actualizo el valor de pantalla
+	document.getElementById("cuenta").innerHTML=contador;
+	//Si contador = 0 paramos
+	if (contador==0){
+		 clearInterval(intervalo);
+		 //Cambio el texto del mensaje
+		 document.getElementById("mensaje").innerHTML="Tiempo Agotado";
+		 //Actualizamos vble booleana
+		 agotado=true;
+	}
+}
+
+//Función al pulsar ACEPTAR
+function comprobar(){
+	//Si no se ha agotado el tiempo comprobamos
+	if (!agotado){
+		var minum = document.getElementById("numero").value;
+		cuentaintentos++;
+		if (aleatorio==minum){
+			document.getElementById("mensaje").innerHTML="HAS ACERTADO";
+			clearInterval(intervalo);
+		}else 
+			document.getElementById("mensaje").innerHTML="SIGUE INTENTANDO";
+			
+		document.getElementById("numintentos").innerHTML=cuentaintentos;
+	}
+}
+
+	
+
+
+</script>
+
+</head>
+
+<body>
+<button id="empieza" onClick="empezar()">Empezar</button>
+<div id="cuenta">10</div>
+
+<h3>Adivina</h3>
+Introduce número: <input type="text" id="numero" >
+<br>
+<button id="aceptar" onClick="comprobar()">Aceptar</button><br>
+Número de intentos:<span id="numintentos">0</span><br>
+<div id="mensaje"></div>
+
+
+
+
+
+</body>
+</html>

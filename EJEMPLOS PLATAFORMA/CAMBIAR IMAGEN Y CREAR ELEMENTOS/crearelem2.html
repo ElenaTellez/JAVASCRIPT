@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+<input type="text" id="texto">
+<button onclick="nuevo()">Nuevo</button>
+
+
+<div id="div1">
+<p id="p1">This is a paragraph.</p>
+<p id="p2">This is another paragraph.</p>
+</div>
+
+<script>
+function nuevo(){
+//Crear nuevo elemento de tipo p
+var para = document.createElement("p");
+//Al nuevo elemento le asigno el valor del input text
+para.innerHTML=document.getElementById("texto").value;
+
+var element = document.getElementById("div1");
+//obtenemos el obj del parrafo2
+var parrafo2 = document.getElementById("p2");
+//añadimos como hijo de la capa justo antes del parrafo2
+element.insertBefore(para, parrafo2);
+}
+</script>
+
+</body>
+</html>

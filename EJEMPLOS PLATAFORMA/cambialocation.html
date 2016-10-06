@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    
+<script>
+
+window.setTimeout(  "cambiar()","5000");
+    
+function cambiar(){
+    location.href="http://www.google.es";
+}
+    
+function mostrar(){
+document.getElementById("mensaje").innerHTML=location.href;
+}
+</script>
+</head>
+    
+<body>
+En 5 segundos se redirigirá la página. O haga click en cambiar.
+<button onclick="cambiar()">Cambiar</button>
+<button onclick="mostrar()">Mostrar</button>
+<div id="mensaje"></div>
+</body>
+</html>

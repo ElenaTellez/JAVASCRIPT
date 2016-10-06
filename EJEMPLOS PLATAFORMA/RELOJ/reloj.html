@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>A script on this page starts this clock:</p>
+
+<p id="demo"></p>
+
+<script>
+//Lanza intervalo de tiempo cada segundo
+//llama a la funcion myTimer
+var myVar = setInterval(myTimer, 1000);
+
+function myTimer() {
+    //vble de fecha
+    var d = new Date();
+    //cambia valor de demo con fecha con formato
+    document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+}
+
+//Para el intervalo
+function parar(){
+    window.clearInterval(myVar);
+}
+    
+//Para el intervalo
+function reanudar(){
+    myVar = setInterval(myTimer, 1000);
+}
+    
+</script>
+
+<button id="boton" onclick="parar()">Parar</button>
+<button id="boton" onclick="reanudar()">Seguir</button>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documento sin título</title>
+<style>
+#contenedor{
+	width:800px;
+	height:600px;
+	position:absolute;
+}
+.patito{
+	top:100px;
+	left:50px;
+	width:25px;
+	height:25px;	
+	background-image:url(patito.png);
+	background-size:25px 25px;
+	position:absolute;
+}
+#mar{
+	top:125px;
+	left:50px;
+	width:700px;
+	height:100px;
+	background-color:lightblue;
+	position:absolute;
+}
+
+</style>
+<script>
+var contador=0;
+var aciertos=0;
+var libres=0;
+
+function comienza(){
+	setInterval("creapato()", 1000);
+}
+
+function creapato(){
+	//Crea capa de patito
+	var nuevopato = document.createElement("div");
+	//Le asigno la clase
+	nuevopato.className="patito";
+	
+	//Añado al contenedor
+    document.getElementById("contenedor").appendChild(nuevopato);
+	//Asigno el evento onclick de dispara
+	nuevopato.setAttribute("onclick","dispara(this)");
+	//Le asigno un id a la capa
+    nuevopato.id="pato"+contador;
+	//Activo el movimiento de la capa
+	mueve(nuevopato.id);
+	//incrementamos contador
+	contador++;
+}
+
+function mueve(patoid){
+    //Tomo el objeto de la capa del pato
+	//A traves de su id
+	var capapato = document.getElementById(patoid);
+	//obtener posición left de la capa pato
+    var izda=capapato.offsetLeft;
+	izda += 50;
+	//La asigno la nueva posicion left
+	capapato.style.left=izda+"px";
+	//Si no esta en el final vuelve a moverse
+    if (izda<=700) {
+	setTimeout("mueve('" + patoid + "')",500);
+	}else {
+	//Si ha llegado al final
+	//Incremento libres y elimino capa
+		libres++;
+		document.getElementById("free").innerHTML=libres;
+		//Elimino capa
+		capapato.parentNode.removeChild(capapato);
+	}
+}
+
+function dispara(capa){
+	aciertos++;
+	//Elimino capa
+	capa.parentNode.removeChild(capa);
+	//Incremento el valor de aciertos
+	document.getElementById("mensaje").innerHTML=aciertos;
+}
+
+</script>
+</head>
+
+<body onload="comienza()">
+<div id="contenedor"></div>
+<div id="mar"></div>
+Killed:<span id="mensaje"></span><br>
+Free:<span id="free"></span>
+</body>
+</html>

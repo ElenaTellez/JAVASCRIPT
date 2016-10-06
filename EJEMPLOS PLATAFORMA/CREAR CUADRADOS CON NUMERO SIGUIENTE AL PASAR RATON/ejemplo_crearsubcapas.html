@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documento sin título</title>
+<style>
+	.capa{
+		position:absolute;
+		width: 50px;
+		height: 50px;
+		background-color: red;
+		color:white;
+	}
+
+</style>
+
+<script>
+var colores = ["cyan", "violet", "green", "yellow", "blue", "grey", "brown"];
+
+function crearCapa(micapa){
+		//Crea nueva capa hija
+		var nuevacapa = document.createElement("div");
+	
+		nuevacapa.className = "capa";//le asigno una clase
+			
+		var topeSup = Math.floor(Math.random()*600);
+		nuevacapa.style.top = topeSup+"px";//lo posiciono aleatoriamente
+	
+		var topeIzq = Math.floor(Math.random()*800);
+		nuevacapa.style.left = topeIzq+"px"; //lo posiciono aleatoriamente
+		
+		var numerohijo = parseInt(micapa.innerHTML)+ 1;
+		nuevacapa.innerHTML = numerohijo ;//pongo el número en la capa +1 a la que le hago el mouseover
+		
+		var numerohijocolor = parseInt(micapa.innerHTML)-1;
+		nuevacapa.style.backgroundColor=colores[numerohijocolor];
+		
+		nuevacapa.setAttribute("onmouseover","crearCapa(this)");//asigno atributo onmouseover para que el div creado llame a la funcion
+		
+		document.body.appendChild(nuevacapa);
+ 
+	}
+</script>
+
+</head>
+
+<body>
+<div class="capa" onmouseover="crearCapa(this)">1</div>
+</body>
+</html>

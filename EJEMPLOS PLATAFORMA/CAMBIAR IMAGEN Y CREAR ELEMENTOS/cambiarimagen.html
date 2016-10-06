@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+<script>
+window.onload=function(){
+    document.getElementById("image").onmouseover=cambiar;
+    document.getElementById("image").onmouseout=cambiar;
+}
+
+function cambiar(){
+    document.getElementById("image").src=  (document.getElementById("image").src.match("landscape"))?"images/smiley.gif":"images/landscape.jpg";   
+}
+
+</script>
+</head>
+    
+<body>
+
+<img id="image" src="images/landscape.jpg" width="160" height="120">
+    
+</body>
+</html>

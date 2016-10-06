@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Documento sin título</title>
+<style>
+	#capa{
+		position:absolute;
+		left:0px;
+		width: 20px;
+		height: 20px;
+		background-color: violet;
+	}
+	#boton{
+		position: absolute;
+		top:50px;
+	}
+</style>
+<script>
+var avance=0;
+var retroceso=5;
+
+var colores = ["violet", "red", "green", "yellow", "blue", "grey", "brown"];
+
+function comenzar(){
+	if (avance<5){	
+		avance++;
+		//mueve y cambia color
+		mueveypinta("+",avance);
+		setTimeout("comenzar()",500);
+	}else
+		if (retroceso>=1){
+			retroceso--;
+			//mueve y cambia color
+			mueveypinta("-",retroceso);
+			setTimeout("comenzar()",500);
+		}
+}
+var izda = 0;
+function mueveypinta(operador, num){
+	izda = (operador=="+")?izda+20:izda-20;
+	document.getElementById("capa").style.left= izda + "px"; 
+	document.getElementById("capa").style.backgroundColor=colores[num];
+	document.getElementById("capa").innerHTML=num;	
+	
+}
+	
+
+</script>
+</head>
+
+<body>
+<div id="capa">0</div>
+<button id="boton" onClick="comenzar()">Comenzar</button>
+</body>
+</html>
