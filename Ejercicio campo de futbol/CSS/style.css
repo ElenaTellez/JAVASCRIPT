@@ -1,0 +1,73 @@
+body{
+	background-color: black;
+}
+
+#campoDeFutbol, #cubierta, #formulario, #informacion {
+	position: absolute;
+	background-color: #0f0;
+	width: 1000px;
+	height: 600px;
+	border: 10px solid white;
+}
+
+#cubierta {
+	background-color: white;
+	border: none;
+}
+
+#formulario {
+	width: 250px;
+}
+
+#formulario p, #informacion p {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 15px;
+	text-decoration: underline;
+}
+
+#informacion {
+	background-color: red;
+	height: 200px;
+	width: 240px;
+}
+
+#formulario input[type=number]  {
+	margin-left: 15px;
+	padding: 5px;
+	font-size: 20px;
+	width: 50px;
+	border: none;
+    border-bottom: 2px solid black;
+	background-color: transparent;
+}
+
+#formulario button {
+	margin-top: 20px;
+	margin-left: 15px;
+	width: 210px;
+	border-radius: 30px;
+	height: 60px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.equipo1, .equipo2 {
+	position: absolute;
+	border-radius: 100%;
+	height: 50px;
+	width: 50px;
+	font-size: 20px;
+	font-weight: bold;
+	padding-left: 20px;
+	padding-top: 13px;
+	box-sizing: border-box;
+}
+
+.equipo1 {
+	background-color: red;
+}
+
+.equipo2 {
+	background-color: blue;	
+}

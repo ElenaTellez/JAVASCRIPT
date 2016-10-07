@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Adolfina Rueda Sánchez">
+        <meta name="description" content="Examen de Javascript - Desarrollo Web en Entorno Cliente">
+        <title>Examen Javascript - Adolfina Rueda Sánchez</title>
+        <style>
+            div {
+                margin: 0;
+                padding: 0;
+            }
+            div#contenedor {
+                position: relative;
+                width: 600px;
+                height: 700px;
+            }
+            div#botones {
+                overflow: hidden;
+            }
+            button {
+                float: right; 
+                margin: 10px 100px 10px 0;
+            }
+            div#info {
+                margin: 0 0 20px 20px;
+            }
+            div#cuadroJuego {
+                position: relative;
+                background-color: black;
+                border: 3px solid grey;
+                overflow: hidden;
+                width: 600px;
+                height: 400px;
+            }
+            div#bebe {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                background: url("images/baby.png") no-repeat;
+            }
+            div#mosquito {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                background: url("images/fly.png") no-repeat;
+            }
+            div.mosqMuerto {
+                position: absolute;
+                width: 606px;
+                height: 144px;
+                background: url("images/deadmosquito.png") no-repeat;
+            }
+        </style>
+        <script>
+            var nivel = 1;
+            
+            //cuando pulso el botón EMPEZAR, comienza el juego
+            function empezar() {
+                /* -------------- INICIALIZACIÓN DEL JUEGO ----------------------------- */
+                //Obtengo todos los mosquitos muertos del juego anterior (si los hubiese) mediante su clase
+                var mosquitosMuertos = document.querySelectorAll("div.mosqMuerto");
+                //y los elimino
+                for (i = 0; i < mosquitosMuertos.length; i++) {
+                    mosquitosMuertos[i].parentNode.removeChild(mosquitosMuertos[i]);
+                }
+                
+                //obtengo también el mosquito anterior y lo elimino
+                var mosquitoAnterior = document.getElementById("mosquito");
+                if (mosquitoAnterior) {
+                    mosquitoAnterior.parentNode.removeChild(mosquitoAnterior);
+                }
+                
+                //quito el mensaje de GAMEOVER 
+                document.getElementById("fin").innerHTML = "";
+                /* ------------------ FIN INICIALIZACIÓN DEL JUEGO ----------------------- */
+                
+                
+                /* ------------------- COMIENZO DEL JUEGO -------------------------------- */
+                //establezco el nivel de juego
+                nivel = 1
+                document.getElementById("numNivel").innerHTML = nivel;
+                
+                
+                //CREACIÓN DEL BEBÉ
+                var bebe = document.createElement("div");
+                
+                //lo posiciono de forma aleatoria dentro del cuadro de juego
+                var izqBebe = Math.floor(Math.random() * 550);
+                bebe.style.left = izqBebe + "px";
+                var topBebe = Math.floor(Math.random() * 350);
+                bebe.style.top = topBebe + "px";
+                
+                //le doy un id para poder darle estilo y usarlo
+                bebe.id = "bebe";
+                
+                //lo incluyo en el cuadro de juego
+                document.getElementById("cuadroJuego").appendChild(bebe);
+                
+                
+                //CREACIÓN DEL MOSQUITO
+                var mosquito = document.createElement("div");
+                
+                //lo posiciono de forma aleatoria dentro del cuadro de juego
+                var izqMosq = Math.floor(Math.random() * 550);
+                mosquito.style.left = izqMosq + "px";
+                var topMosq = Math.floor(Math.random() * 350);
+                mosquito.style.top = topMosq + "px";
+                
+                //le doy un id para poder darle estilo y usarlo
+                mosquito.id = "mosquito";
+                
+                //le asigno el evento onclick para crear un mosquito muerto y posicionar de nuevo el mosquito vivo
+                mosquito.setAttribute("onclick", "reposicionar()");
+                
+                //lo incluyo en el cuadro de juego
+                document.getElementById("cuadroJuego").appendChild(mosquito);
+                
+                //llamo a la función que mueve el mosquito
+                mueveMosquito(nivel);
+                
+                
+                //DESHABILITO EL BOTÓN EMPEZAR
+                document.getElementById("botonEmpezar").disabled = true;
+            }
+            
+            
+            
+            //FUNCIÓN PARA MOVER EL MOSQUITO
+            //le paso como parámetro el nivel de juego, para establecer la velocidad de movimiento en el setTimeout
+            function mueveMosquito(nivel) {
+                //obtengo los dos elementos del juego
+                var mosquito = document.getElementById("mosquito");
+                var bebe = document.getElementById("bebe"); 
+                
+                //saco sus left y sus top
+                var izqBebe = bebe.offsetLeft;
+                var topBebe = bebe.offsetTop;
+                
+                var izqMosq = mosquito.offsetLeft;
+                var topMosq = mosquito.offsetTop; 
+                
+                //si la izq del Mosq es menor que la del Bebé, la incremento para llegar al Bebé. Si no, la decremento
+                if (izqMosq < izqBebe) {
+                    //PARA FIREFOX, HAY QUE HABILITAR ESTE INCREMENTO Y DESHABILITAR izqMosq++;
+                    //izqMosq += 4; 
+                    izqMosq++;
+                    mosquito.style.left = izqMosq + "px";
+                } else if (izqMosq > izqBebe) {
+                    //PARA FIREFOX, HAY QUE HABILITAR ESTE DECREMENTO Y DESHABILITAR izqMosq--;
+                    //izqMosq += 2; 
+                    izqMosq--;
+                    mosquito.style.left = izqMosq + "px";
+                }
+                
+                //si el top del mosquito es menor que el del Bebé, lo incremento para llegar al Bebé. Si no, lo decremento
+                if (topMosq < topBebe) {
+                    //PARA FIREFOX, HAY QUE HABILITAR ESTE INCREMENTO Y DESHABILITAR topMosq++;
+                    //topMosq +=4; 
+                    topMosq++;
+                    mosquito.style.top = topMosq + "px"; 
+                } else if (topMosq > topBebe) {
+                    //PARA FIREFOX, HAY QUE HABILITAR ESTE DECREMENTO Y DESHABILITAR topMosq--;
+                    //topMosq +=2; 
+                    topMosq--;
+                    mosquito.style.top = topMosq + "px";
+                }
+                
+                //si tanto izq como top son iguales en ambos, el juego ha finalizado
+                if ((izqMosq == izqBebe) && (topMosq == topBebe)) {
+                    finJuego();
+                }
+                
+                //obtengo el nivel del juego del span numNivel y establezco la velocidad de movimiento del mosquito
+                nivel = parseInt(document.getElementById("numNivel").innerHTML);
+                var velocidadMov = 50 / nivel;
+                
+                //llamo recursivamente a la función con el nivel de juego según la velocidad que corresponda
+                setTimeout("mueveMosquito('" + nivel + "')", velocidadMov);
+            }
+            
+            
+            //FUNCIÓN PARA REPOSICIONAR EL MOSQUITO
+            //si pincho en el mosquito, se mostrará una imagen del mosquito muerto y el mosquito vivo buscará una nueva posición. 
+            function reposicionar() {
+                nivel = parseInt(document.getElementById("numNivel").innerHTML);
+                
+                //busco el mosquito vivo
+                var mosquito = document.getElementById("mosquito");
+                
+                //saco su posicionamiento, para después ponérselo al mosquito muerto
+                var izqMosq = mosquito.offsetLeft;
+                var topMosq = mosquito.offsetTop;
+                
+                
+                //CREACIÓN DE MOSQUITO MUERTO
+                //creo un mosquito muerto de clase mosqMuerto
+                var mosquitoMuerto = document.createElement("div");
+                mosquitoMuerto.className = "mosqMuerto";
+                
+                //lo posiciono en las coordenadas en las que está el mosquito vivo
+                mosquitoMuerto.style.left = izqMosq + "px";
+                mosquitoMuerto.style.top = topMosq + "px";
+                
+                //lo incluyo en el cuadro de juego
+                document.getElementById("cuadroJuego").appendChild(mosquitoMuerto);
+                
+                
+                //busco nuevas posiciones para el mosquito vivo
+                izqMosq = Math.floor(Math.random() * 550);
+                mosquito.style.left = izqMosq + "px";
+                topMosq = Math.floor(Math.random() * 350);
+                mosquito.style.top = topMosq + "px";
+                
+                //incremento el nivel de juego
+                nivel++;
+                document.getElementById("numNivel").innerHTML = nivel;
+            }
+            
+            
+            //FUNCIÓN QUE FINALIZA EL JUEGO
+            //si la posición del mosquito es la misma que la del bebé, finaliza el juego
+            function finJuego() {
+                //obtengo el mosquito y el bebé mediante su id
+                var mosquito = document.getElementById("mosquito");
+                var bebe = document.getElementById("bebe");
+                
+                //elimino el bebé
+                bebe.parentNode.removeChild(bebe);
+                
+                //le quito el onclick al mosquito
+                mosquito.setAttribute("onclick", "");
+                
+                //muestro el mensaje de GAMEOVER
+                document.getElementById("fin").innerHTML = "GAMEOVER!!";
+                
+                //HABILITO DE NUEVO EL BOTÓN EMPEZAR
+                document.getElementById("botonEmpezar").disabled = false;
+            }
+        </script>
+    </head>
+    <body>
+        <div id="contenedor">
+            <div id="botones">
+                <button id="botonEmpezar" onclick="empezar()">EMPEZAR</button>
+            </div>
+            
+            <div id="info">
+                <span id="fin"></span><br>
+                Nivel nº <span id="numNivel"></span>
+            </div>
+            
+            <div id="cuadroJuego">
+                
+            </div>
+        </div>
+    </body>
+</html>

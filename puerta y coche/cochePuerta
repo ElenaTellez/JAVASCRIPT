@@ -59,7 +59,7 @@
 	
 	var intervalo;
 	var intervaloP;
-	var pasar = true;
+	var pasar = false;
 				
 	var caracol = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
 	caracol.className="caracoles"; //Aplicamos una clase, estilos, id y atributos
@@ -75,36 +75,38 @@
 	
 	clearInterval(intervalo);
 	
-	intervalo  = setInterval(function () { 				
-		
+	intervalo  = setInterval(function () { 		
 		var posicion = caracol.offsetLeft;
-			
-		if ((posicion>400)&&(puerta.offsettop=55))  {
-			clearInterval(intervalo);
-			} else if (posicion<1000){
+			if ((posicion<1000)&&(pasar)){
+				caracol.style.left = (posicion +=2) + "px";	
+				}else if ((posicion<400)&&(!pasar)){			
+				caracol.style.left = (posicion +=2) + "px";	
+				}else if (((posicion>600)&&(posicion<1000))&&(!pasar)){			
 				caracol.style.left = (posicion +=2) + "px";	
 				}else { 
 					clearInterval(intervalo);
 				}
-				
-		}, 20);	
-	
+		}, 20);
 	}
 	
 	
 	function retroceder(){	
 	
 	clearInterval(intervalo);
-	
 	intervalo = setInterval(function () { 				
 	var posicion = caracol.offsetLeft;
-			if (posicion > 0){
-				caracol.style.left = (posicion -=2) + "px";				
-					} else  {
-						clearInterval(intervalo);
-					}
-				
-			}, 20);	
+			if ((posicion>0)&&(pasar)){
+				caracol.style.left = (posicion -=2) + "px";	
+				} else if ((posicion>600)&&(!pasar)){			
+				caracol.style.left = (posicion -=2) + "px";	
+				}else if (((posicion<600)&&(posicion > 0))&&(!pasar)){			
+				caracol.style.left = (posicion -=2) + "px";	
+				} else if (((posicion<400)&&(posicion > 0))&&(!pasar)){			
+				caracol.style.left = (posicion -=2) + "px";	
+				}else { 
+					clearInterval(intervalo);
+				}
+		}, 20);	
 		
 	}
 	
@@ -112,12 +114,12 @@
 		clearInterval(intervalo);	
 	}
 	
-	function abrir(){	
-		
+	function abrir(){
+		pasar = true;	
 		intervaloP = setInterval(function () { 				
 		var posicion = puerta.offsetTop;
 			if (posicion > 0){
-				puerta.style.top = (posicion -=2) + "px";				
+				puerta.style.top = (posicion -=2) + "px";	
 					} else  {
 						clearInterval(intervaloP);
 					}
@@ -126,18 +128,16 @@
 	}
 		 
 	function cerrar(){	
-		
+		pasar = false;
 		intervaloP = setInterval(function () { 				
 		var posicion = puerta.offsetTop;
 			if (posicion < 55){
-				puerta.style.top = (posicion +=2) + "px";				
+				puerta.style.top = (posicion +=2) + "px";	
 					} else  {
 						clearInterval(intervaloP);
 					}
-				
 			}, 20);
-			
-			}
+		}
 	</script>
 
 </body>
