@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<style>
+		
+	#container {
+		width: 1000px;
+		height: 600px;
+		position: relative;	
+		background: url(images/silueta.png) no-repeat center;
+		background-size: 100%;
+		 
+	}
+	
+	 #nivel{
+            position: absolute;
+            top:50px;
+            left: 10px;
+        }
+
+		
+	.edificio {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		width: 150px;
+		height: 600px;
+		background: url(images/building.png) no-repeat;
+       
+	}
+	.hombrearana{
+		position: absolute;
+		top: 15px;
+		left: 160px;
+		width: 150px;
+		height: 152px;
+		background: url(images/spiderman.png) no-repeat;		
+		}
+		
+	.hombreverde{
+		position: absolute;
+		left:950px;
+		top:10px;
+		width: 150px;
+		height: 148px;
+		background: url(images/greengoblin.png) no-repeat;		
+		}	
+		
+	.bombardeo {
+		position: absolute;
+		left:950px;
+		width: 40px;
+		height: 39px;
+		background: url(images/bomb.png) no-repeat;		
+		}	
+	
+</style>
+<body>
+
+<p>
+	<button id="ok"onclick="empezar()">Empezar</button>
+	<button id="okuno" onclick="subir()">Subir</button>
+	<button id="okdos" onclick="bajar()">Bajar</button>
+	<button id="oktres"onclick="parar()">Parar</button>
+	<div id="nivel">Nivel: 1 </div>
+	
+</p> 
+
+
+
+<div id ="container">
+</div>
+ 
+
+<script>
+    
+    var bloque = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	bloque.className="edificio"; //Aplicamos una clase, estilos, id y atributos
+	document.getElementById("container").appendChild(bloque); //agregamos a Spiderman a container
+	
+	var spiderman= document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	spiderman.className="hombrearana"; //Aplicamos una clase, estilos, id y atributos
+	document.getElementById("container").appendChild(spiderman); //agregamos la el Edificio a container
+	
+	var verde= document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+	verde.className="hombreverde"; //Aplicamos una clase, estilos, id y atributos
+	verde.setAttribute("onclick", "lanzarBomba(this)"); // crea el onclick individual
+	document.getElementById("container").appendChild(verde); //agregamos el Malo a container
+	
+	var intervalo;
+	var nivel = 0;
+	
+	document.getElementById("ok").disabled=false;
+	document.getElementById("okuno").disabled=true;
+	document.getElementById("okdos").disabled=true;
+	document.getElementById("oktres").disabled=true;
+	
+	function empezar () {
+		
+	var capasContenedor = document.querySelectorAll("#container div");
+    for(var i = 0;i < capasContenedor.length;i++){
+        capasContenedor[i].parentNode.removeChild(capasContenedor[i]);
+        }	
+	verde.style.top = getRand(10, 460) + "px"; //genera posicion del malo de forma aleatoria    
+    nivel = 0;   //reinicia el valor del nivel del juego al perder
+     
+    document.getElementById("container").appendChild(spiderman);     
+	document.getElementById("container").appendChild(bloque);
+	document.getElementById("container").appendChild(verde);
+	document.getElementById("nivel").innerHTML = "Nivel: 1";	
+	document.getElementById("ok").disabled=true;
+	document.getElementById("okuno").disabled=false;
+	document.getElementById("okdos").disabled=false;
+	document.getElementById("oktres").disabled=false;
+	}
+		
+	function bajar(){	//movimiento de bajar de spiderman
+	
+	clearInterval(intervalo);
+	
+	intervalo  = setInterval(function () { 		
+		var posicion = spiderman.offsetTop;
+			if (posicion<460){
+				spiderman.style.top = (posicion +=2) + "px";
+				}else { 
+					clearInterval(intervalo);
+				}
+		}, 10);
+	}
+	
+	function subir(){	//movimiento de subir de spiderman
+	
+	clearInterval(intervalo);
+	
+	intervalo  = setInterval(function () { 		
+		var posicion = spiderman.offsetTop;
+			if (posicion>10){
+				spiderman.style.top = (posicion -=2) + "px";	
+				}else { 
+					clearInterval(intervalo);
+				}
+		}, 10);
+	}
+	
+	function parar(){	// para movimiento de spiderman
+	clearInterval(intervalo);
+	}
+	
+	function lanzarBomba(){
+		
+		for (var i = 0; i < nivel; i++) {	// crea numero de bombas segun nivel
+			var bomba = document.createElement("div"); //crea un elemento en la memoria pero aun no se ve 
+			bomba.className="bombardeo"; //Aplicamos una clase, estilos, id y atributos
+			bomba.style.top = verde.style.top;
+			bomba.style.backgroundImage = "url(images/bomb.png)";    
+			document.getElementById("container").appendChild(bomba); //agregamos la capa circulo a container
+			caida (bomba); //doy movimiento a la bomba
+		}
+	 nivel++;
+	 document.getElementById("nivel").innerHTML = "Nivel: " + nivel;
+	}
+
+	function caida(bomba) { //movimiento de la bomba
+		
+		var idinterval = setInterval(function () {
+		var leftreal = bomba.offsetLeft;
+		bomba.style.top = bomba.style.top + getRand (50,100);		 
+                if (leftreal > 150)  {
+                    bomba.style.left = (leftreal -= 2) + "px";
+                } else if (comprobar(bomba.offsetTop)){
+					bomba.parentNode.removeChild(bomba);					
+					verde.style.top= getRand(10, 460) + "px";
+					clearInterval(idinterval);	
+				} else {  
+					bomba.style.backgroundImage = "url(images/explosion.png";//cambia imagen por explosion
+					document.getElementById("nivel").innerHTML = "GAME OVER";
+					bloque.parentNode.removeChild(bloque);		//desaparece edificio	
+					document.getElementById("ok").disabled=false;
+					document.getElementById("okuno").disabled=true;
+					document.getElementById("okdos").disabled=true;
+					document.getElementById("oktres").disabled=true;	
+                    clearInterval(idinterval); 
+                    }  
+               
+            }, 10)
+          
+    }    
+    
+    function comprobar(posicion){ //comprueba que la bomba la neutraliza o no spiderman
+		var comprobar = false;	
+		if ((posicion > spiderman.offsetTop) && (posicion < (spiderman.offsetTop + 150))){
+			comprobar=true;	
+			}
+			return comprobar;
+	}    
+	
+	function getRand(min, max) {
+            return Math.random() * (max - min) + min;
+        } // funcion para crear numeros aleatorios	 
+	  
+ 
+	
+</script>
+
+</body>
+</html>
